@@ -18,7 +18,22 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Install Capacitor CLI & Core
+        run: npm install @capacitor/core @capacitor/cli @capacitor/android --legacy-peer-deps
+
+      - name: Build Web Assets
+        run: npm run build
+
+      - name: Initialize Capacitor & Add Android
+        run: |
+          npx cap init "TASS INPUT 2.0" "com.tassinput.app" --web-dir dist || true
+          npx cap add android || true
+          npx cap sync android
 
       - name: Setup Java JDK
         uses: actions/setup-java@v4
@@ -26,26 +41,14 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Build Web Assets
-        run: npm run build
-
-      - name: Add Android Platform
-        run: |
-          npx cap add android || true
-          npx cap sync android
-
       - name: Build APK with Gradle
         run: |
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
 
-      - name: Upload APK
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: TASS-Input-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
-          
