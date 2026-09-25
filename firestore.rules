@@ -1,0 +1,94 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isSuperAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'soroni520@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isAdmin() {
+      return isSuperAdmin();
+    }
+
+    // Admins Collection
+    match /admins/{adminId} {
+      allow read: if true;
+      allow write: if isSuperAdmin();
+    }
+
+    // Authorized Emails for Passwordless Access
+    match /authorized_users/{userId} {
+      allow read, write: if true;
+    }
+
+    // App Settings (Secret PIN, etc.)
+    match /app_settings/{settingId} {
+      allow read, write: if true;
+    }
+
+    // User Profiles with Roles & Credentials
+    match /users/{userId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // Buyers
+    match /buyers/{buyerId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if true;
+    }
+
+    // BLK Orders
+    match /blk_orders/{blkId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if true;
+    }
+
+    // Production Inputs (Size-by-size breakdown)
+    match /production_inputs/{inputId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if true;
+    }
+
+    // Accessories (Sewing Threads, Elastics, Drawstring, etc.)
+    match /accessories/{accessoryId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if true;
+    }
+
+    // Accessory Transactions (Issue to Line, Receive in Store)
+    match /accessories_transactions/{txId} {
+      allow read: if true;
+      allow create: if true;
+      allow update, delete: if true;
+    }
+
+    // Activity Logs (Audit Trail monitored by Admin)
+    match /activity_logs/{logId} {
+      allow read: if true;
+      allow create: if true;
+      allow update, delete: if false;
+    }
+
+    // Test connection doc
+    match /test/{docId} {
+      allow read, write: if true;
+    }
+  }
+}

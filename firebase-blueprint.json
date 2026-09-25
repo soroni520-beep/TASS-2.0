@@ -1,0 +1,534 @@
+{
+  "entities": {
+    "Admin": {
+      "title": "Admin",
+      "description": "System administrator record for role verification",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "Administrator email address",
+          "maxLength": 100
+        },
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth user ID",
+          "maxLength": 128
+        },
+        "role": {
+          "type": "string",
+          "description": "Admin role",
+          "enum": ["admin"]
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        }
+      },
+      "required": ["email", "uid", "role"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile with role created by admin",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth user ID",
+          "maxLength": 128
+        },
+        "email": {
+          "type": "string",
+          "description": "User login email",
+          "maxLength": 100
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User display name",
+          "maxLength": 100
+        },
+        "role": {
+          "type": "string",
+          "description": "User assigned role",
+          "enum": ["admin", "operator", "supervisor", "store_keeper"]
+        },
+        "status": {
+          "type": "string",
+          "description": "Account status",
+          "enum": ["active", "disabled"]
+        },
+        "assignedPassword": {
+          "type": "string",
+          "description": "Reference credential for admin managed operators",
+          "maxLength": 64
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "Admin email who created this operator",
+          "maxLength": 100
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Last update timestamp"
+        }
+      },
+      "required": ["uid", "email", "displayName", "role", "status"]
+    },
+    "Buyer": {
+      "title": "Buyer",
+      "description": "Garment buyer profile",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Buyer company or brand name",
+          "maxLength": 100
+        },
+        "code": {
+          "type": "string",
+          "description": "Short code or buyer tag",
+          "maxLength": 30
+        },
+        "country": {
+          "type": "string",
+          "description": "Buyer country or market",
+          "maxLength": 50
+        },
+        "contactPerson": {
+          "type": "string",
+          "description": "Contact person name or phone",
+          "maxLength": 100
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional notes",
+          "maxLength": 500
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "Creator user UID or email",
+          "maxLength": 100
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Last update timestamp"
+        }
+      },
+      "required": ["name"]
+    },
+    "BlkOrder": {
+      "title": "BlkOrder",
+      "description": "BLK Style / PO order for production",
+      "type": "object",
+      "properties": {
+        "buyerId": {
+          "type": "string",
+          "description": "Reference ID to Buyer",
+          "maxLength": 128
+        },
+        "buyerName": {
+          "type": "string",
+          "description": "Buyer name",
+          "maxLength": 100
+        },
+        "blkNumber": {
+          "type": "string",
+          "description": "BLK or PO number",
+          "maxLength": 100
+        },
+        "styleName": {
+          "type": "string",
+          "description": "Style description or name",
+          "maxLength": 100
+        },
+        "itemType": {
+          "type": "string",
+          "description": "Garment item type (e.g. T-Shirt, Polo, Pant)",
+          "maxLength": 50
+        },
+        "season": {
+          "type": "string",
+          "description": "Season or Year",
+          "maxLength": 50
+        },
+        "availableColors": {
+          "type": "string",
+          "description": "Comma separated colors list",
+          "maxLength": 300
+        },
+        "availableSizes": {
+          "type": "string",
+          "description": "Comma separated size set list",
+          "maxLength": 300
+        },
+        "totalTargetQty": {
+          "type": "number",
+          "description": "Total target order quantity"
+        },
+        "status": {
+          "type": "string",
+          "description": "Order status",
+          "enum": ["running", "completed", "hold"]
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "Creator email or UID",
+          "maxLength": 100
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Update timestamp"
+        }
+      },
+      "required": ["buyerName", "blkNumber", "itemType", "status"]
+    },
+    "ProductionInput": {
+      "title": "ProductionInput",
+      "description": "Daily garment production input entry with size-by-size breakdown",
+      "type": "object",
+      "properties": {
+        "blkId": {
+          "type": "string",
+          "description": "Order reference id",
+          "maxLength": 128
+        },
+        "blkNumber": {
+          "type": "string",
+          "description": "BLK / PO Number",
+          "maxLength": 100
+        },
+        "buyerName": {
+          "type": "string",
+          "description": "Buyer name",
+          "maxLength": 100
+        },
+        "color": {
+          "type": "string",
+          "description": "Garment color",
+          "maxLength": 50
+        },
+        "srNumber": {
+          "type": "string",
+          "description": "Serial or batch number",
+          "maxLength": 50
+        },
+        "bundleNo": {
+          "type": "string",
+          "description": "Cutting bundle number",
+          "maxLength": 50
+        },
+        "lineNo": {
+          "type": "string",
+          "description": "Sewing production line number",
+          "maxLength": 50
+        },
+        "sizesJson": {
+          "type": "string",
+          "description": "Serialized JSON size to quantity mapping e.g. {S: 50, M: 100}",
+          "maxLength": 1000
+        },
+        "totalQty": {
+          "type": "number",
+          "description": "Calculated total quantity for this entry"
+        },
+        "date": {
+          "type": "string",
+          "description": "Input date in YYYY-MM-DD",
+          "maxLength": 20
+        },
+        "remarks": {
+          "type": "string",
+          "description": "Remarks or cutting notes",
+          "maxLength": 300
+        },
+        "operatorEmail": {
+          "type": "string",
+          "description": "Operator email who input",
+          "maxLength": 100
+        },
+        "operatorName": {
+          "type": "string",
+          "description": "Operator name",
+          "maxLength": 100
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Update timestamp"
+        }
+      },
+      "required": ["blkNumber", "buyerName", "color", "totalQty", "date"]
+    },
+    "Accessory": {
+      "title": "Accessory",
+      "description": "Accessory item in garment store",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Accessory name (e.g. দোস্টিং, Sewing Thread 50/2, Elastic 2.2)",
+          "maxLength": 100
+        },
+        "code": {
+          "type": "string",
+          "description": "Item identification code",
+          "maxLength": 50
+        },
+        "category": {
+          "type": "string",
+          "description": "Category (Thread, Elastic, Drawstring, Button, Label, Poly, etc.)",
+          "maxLength": 50
+        },
+        "spec": {
+          "type": "string",
+          "description": "Specification e.g. 50/2, 150/D, 2.2 cm, 2.7 cm",
+          "maxLength": 50
+        },
+        "unit": {
+          "type": "string",
+          "description": "Unit of measurement (cones, meters, yards, pcs, kg, gross)",
+          "maxLength": 20
+        },
+        "currentStock": {
+          "type": "number",
+          "description": "Available stock quantity"
+        },
+        "minAlertStock": {
+          "type": "number",
+          "description": "Minimum threshold warning quantity"
+        },
+        "description": {
+          "type": "string",
+          "description": "Details or supplier remarks",
+          "maxLength": 300
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Update timestamp"
+        }
+      },
+      "required": ["name", "unit", "currentStock"]
+    },
+    "AccessoryTransaction": {
+      "title": "AccessoryTransaction",
+      "description": "Store issue or receive record for accessories",
+      "type": "object",
+      "properties": {
+        "accessoryId": {
+          "type": "string",
+          "description": "Reference ID of accessory",
+          "maxLength": 128
+        },
+        "accessoryName": {
+          "type": "string",
+          "description": "Name of accessory",
+          "maxLength": 100
+        },
+        "type": {
+          "type": "string",
+          "description": "Transaction type",
+          "enum": ["receive", "issue"]
+        },
+        "quantity": {
+          "type": "number",
+          "description": "Quantity moved"
+        },
+        "unit": {
+          "type": "string",
+          "description": "Unit of measurement",
+          "maxLength": 20
+        },
+        "blkNumber": {
+          "type": "string",
+          "description": "Related BLK number if issued for production",
+          "maxLength": 100
+        },
+        "recipientLine": {
+          "type": "string",
+          "description": "Line or department receiving the accessory",
+          "maxLength": 50
+        },
+        "challanNo": {
+          "type": "string",
+          "description": "Challan or MRR number",
+          "maxLength": 50
+        },
+        "note": {
+          "type": "string",
+          "description": "Notes or supplier name",
+          "maxLength": 200
+        },
+        "operatorEmail": {
+          "type": "string",
+          "description": "Operator email who processed transaction",
+          "maxLength": 100
+        },
+        "operatorName": {
+          "type": "string",
+          "description": "Operator name",
+          "maxLength": 100
+        },
+        "date": {
+          "type": "string",
+          "description": "Transaction date",
+          "maxLength": 20
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        }
+      },
+      "required": ["accessoryId", "accessoryName", "type", "quantity", "date"]
+    },
+    "ActivityLog": {
+      "title": "ActivityLog",
+      "description": "Audit trail log of user operations in the application",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "User UID",
+          "maxLength": 128
+        },
+        "userEmail": {
+          "type": "string",
+          "description": "User email address",
+          "maxLength": 100
+        },
+        "userName": {
+          "type": "string",
+          "description": "User display name",
+          "maxLength": 100
+        },
+        "action": {
+          "type": "string",
+          "description": "Action performed (e.g. login, create_input, update_input, issue_accessory, create_user)",
+          "maxLength": 50
+        },
+        "details": {
+          "type": "string",
+          "description": "Detailed explanation of the action",
+          "maxLength": 500
+        },
+        "entityType": {
+          "type": "string",
+          "description": "Target entity type (production_input, blk, accessory, user)",
+          "maxLength": 50
+        },
+        "entityId": {
+          "type": "string",
+          "description": "Target entity id",
+          "maxLength": 128
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        }
+      },
+      "required": ["userEmail", "action", "details"]
+    },
+    "AuthorizedUser": {
+      "title": "AuthorizedUser",
+      "description": "User account authorized by admin with email and password",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "Login email or Gmail",
+          "maxLength": 100
+        },
+        "password": {
+          "type": "string",
+          "description": "Account password set by admin",
+          "maxLength": 64
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Display name or department",
+          "maxLength": 100
+        },
+        "role": {
+          "type": "string",
+          "description": "User role",
+          "enum": ["admin", "operator", "supervisor", "store_keeper"]
+        },
+        "status": {
+          "type": "string",
+          "description": "Account status",
+          "enum": ["active", "blocked"]
+        },
+        "addedBy": {
+          "type": "string",
+          "description": "Admin email who created the user",
+          "maxLength": 100
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Update timestamp"
+        }
+      },
+      "required": ["email", "role", "status"]
+    }
+  },
+  "firestore": {
+    "/admins/{adminId}": {
+      "schema": "Admin",
+      "description": "Admin UID list for zero-trust authorization"
+    },
+    "/authorized_users/{userId}": {
+      "schema": "AuthorizedUser",
+      "description": "Authorized user accounts with email and password created by admin"
+    },
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile with role and credentials created by admin"
+    },
+    "/buyers/{buyerId}": {
+      "schema": "Buyer",
+      "description": "Garment buyer entities"
+    },
+    "/blk_orders/{blkId}": {
+      "schema": "BlkOrder",
+      "description": "Garment order styles and target specs"
+    },
+    "/production_inputs/{inputId}": {
+      "schema": "ProductionInput",
+      "description": "Line garment input records with size breakdown"
+    },
+    "/accessories/{accessoryId}": {
+      "schema": "Accessory",
+      "description": "Stock of sewing threads, elastics, drawstrings, etc."
+    },
+    "/accessories_transactions/{txId}": {
+      "schema": "AccessoryTransaction",
+      "description": "Issue and receive records for store accessories"
+    },
+    "/activity_logs/{logId}": {
+      "schema": "ActivityLog",
+      "description": "User activity audit logs monitored by Admin"
+    }
+  }
+}

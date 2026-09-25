@@ -1,0 +1,6 @@
+{
+  "name": "TASS INPUT 2.0",
+  "description": "গার্মেন্ট প্রোডাকশন মাল ইনপুট ও স্টোর এক্সেসরিজ ইনভেন্টরি ম্যানেজমেন্ট সিস্টেম (TASS INPUT 2.0 - Garment Production Input & Accessories Inventory System)",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
